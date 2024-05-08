@@ -4,8 +4,10 @@ import "./scss/app.scss";
 import Header from "./components/header";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
+
 import Cart from "./pages/cart";
 import NotFound from "./pages/n404";
+
 export const AppContext = createContext();
 function App() {
   const [searches, setSearches] = useState("");

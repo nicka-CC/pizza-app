@@ -1,16 +1,20 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
+const list = [
+  { name: "популярности по-возрастанию", sortProperty: "raiting" },
+  { name: "популярности по-убыванию", sortProperty: "-raiting" },
+  { name: "цене по-возрастанию", sortProperty: "price" },
+  { name: "цене по-убыванию", sortProperty: "-price" },
+  { name: "алфавиту по-возрастанию", sortProperty: "title" },
+  { name: "алфавиту по-убыванию", sortProperty: "-title" },
+];
+export default function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+  const [sortO, setSortO] = useState(false);
 
-export default function Sort({ sortValue, ClickSort }) {
-  const [sort, setSort] = useState(false);
-  const list = [
-    { name: "популярности по-возрастанию", sort: "raiting" },
-    { name: "популярности по-убыванию", sort: "-raiting" },
-    { name: "цене по-возрастанию", sort: "price" },
-    { name: "цене по-убыванию", sort: "-price" },
-    { name: "алфавиту по-возрастанию", sort: "title" },
-    { name: "алфавиту по-убыванию", sort: "-title" },
-  ];
-  const sortName = sortValue.name;
+  const sortName = sort.name;
   return (
     <div className="sort">
       <div className="sort__label">
@@ -27,18 +31,20 @@ export default function Sort({ sortValue, ClickSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setSort(!sort)}>{sortName}</span>
+        <span onClick={() => setSortO(!sortO)}>{sortName}</span>
       </div>
-      {sort && (
+      {sortO && (
         <div className="sort__popup">
           <ul>
             {list.map((lis, i) => (
               <li
                 onClick={() => {
-                  ClickSort(lis);
-                  setSort(false);
+                  dispatch(setSort(lis));
+                  setSortO(false);
                 }}
-                className={sortValue.sort === lis.sort ? "active" : ""}
+                className={
+                  sort.sortProperty === lis.sortProperty ? "active" : ""
+                }
               >
                 {lis.name}
               </li>

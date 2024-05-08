@@ -3,22 +3,28 @@ import Sort from "../components/sort";
 import PizzaBlock from "../components/pizzaBlock";
 import Skeletone from "../components/skelletonPizzaBlock";
 import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 import { createContext, useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
+import { setCategoryId } from "../redux/slices/filterSlice";
 export default function Home() {
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const sortValue = useSelector((state) => state.filter.sort.sortProperty);
+  const categoryIndex = categoryId;
+  const dispatch = useDispatch();
   const { searches } = useContext(AppContext);
   const [piz, setPiz] = useState([]);
   const [image, setImage] = useState(true);
-  const [categoryIndex, setCategoryIndex] = useState(0);
-  const [sortValue, setSortValue] = useState({
-    name: "Популярности",
-    sort: "raiting",
-  });
+
   const [currentPage, setCurrentPage] = useState(1);
   console.log(categoryIndex, sortValue);
+  const onClickedCategory = (id) => {
+    dispatch(setCategoryId(id));
+  };
+  console.log(categoryId);
   useEffect(() => {
-    const order = sortValue.sort.includes("-") ? "asc" : "desc";
-    const sortBy = sortValue.sort.replace("-", "");
+    const order = sortValue.includes("-") ? "asc" : "desc";
+    const sortBy = sortValue.replace("-", "");
 
     setImage(true);
     fetch(
@@ -41,9 +47,9 @@ export default function Home() {
         <div className="content__top">
           <Category
             value={categoryIndex}
-            onClickOnCategory={(index) => setCategoryIndex(index)}
+            onClickOnCategory={onClickedCategory}
           />
-          <Sort sortValue={sortValue} ClickSort={(i) => setSortValue(i)} />
+          <Sort />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
