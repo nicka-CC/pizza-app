@@ -14,17 +14,19 @@ import {
   setPageCount,
   setFilters,
 } from "../redux/slices/filterSlice";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 export default function Home() {
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortVal = useSelector((state) => state.filter.sort.sortProperty);
   const isSearch = useRef(true);
   const isMounted = useRef(true);
   const pageCount = useSelector((state) => state.filter.pageCount);
+  const { items, status } = useSelector((state) => state.pizza);
   const categoryIndex = categoryId;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { searches } = useContext(AppContext);
-  const [piz, setPiz] = useState([]);
+
   const [image, setImage] = useState(true);
 
   const onClickedCategory = (id) => {
@@ -42,24 +44,34 @@ export default function Home() {
     }
     isSearch.current = true;
   }, []);
-  const ax = () => {
+  const ax = async () => {
     const order = sortVal.includes("-") ? "asc" : "desc";
     const sortBy = sortVal.replace("-", "");
 
     setImage(true);
 
-    axios
-      .get(
-        `https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes?page=${pageCount}&limit=4&${
-          categoryIndex > 0 ? `category=${categoryIndex}` : ``
-        }&sortBy=${sortBy}&order=${order}${
-          searches ? `&search=${searches}` : ``
-        }`
-      )
-      .then((res) => {
-        setPiz(res.data);
-        setImage(false);
-      });
+    try {
+      dispatch(
+        fetchPizzas({ sortBy, order, searches, categoryIndex, pageCount })
+      );
+      // setPiz(res.data);
+    } catch (error) {
+      console.log("AXIOS ERROR!!!", error);
+    } finally {
+      setImage(false);
+    }
+    // await axios
+    //   .get(
+    //     `https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes?page=${pageCount}&limit=4&${
+    //       categoryIndex > 0 ? `category=${categoryIndex}` : ``
+    //     }&sortBy=${sortBy}&order=${order}${
+    //       searches ? `&search=${searches}` : ``
+    //     }`
+    //   )
+    //   .then((res) => {
+    //     setPiz(res.data);
+    //     setImage(false);
+    //   });
   };
   useEffect(() => {
     if (isSearch.current) {
@@ -93,30 +105,33 @@ export default function Home() {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
-          {image
-            ? [...new Array(13)].map((_, index) => <Skeletone key={index} />)
-            : piz
-                // .filter((pizza) => {
-                //   if (
-                //     pizza.title.toLowerCase().includes(searches.toLowerCase())
-                //   ) {
-                //     return true;
-                //   }
-                //   return false;
-                // })
-                .map((pizza) => (
-                  <PizzaBlock
-                    key={pizza.id}
-                    id={pizza.id}
-                    title={pizza.title}
-                    price={pizza.price}
-                    image={pizza.imageUrl}
-                    sizes={pizza.sizes}
-                    types={pizza.types}
-                  >
-                    {console.log(pizza.imageUrl)}
-                  </PizzaBlock>
-                ))}
+          {status === "error" ? (
+            <div>
+              <p>Произошла ОШИБКА</p>
+              <p>Что-то пошло не так, пожалуйста, повторите попытку позже!</p>
+            </div>
+          ) : (
+            <>
+              {status === "loading"
+                ? [...new Array(13)].map((_, index) => (
+                    <Skeletone key={index} />
+                  ))
+                : items.map((pizza) => (
+                    <PizzaBlock
+                      key={pizza.id}
+                      id={pizza.id}
+                      title={pizza.title}
+                      price={pizza.price}
+                      image={pizza.imageUrl}
+                      sizes={pizza.sizes}
+                      types={pizza.types}
+                    >
+                      {console.log(pizza.imageUrl)}
+                    </PizzaBlock>
+                  ))}
+              )
+            </>
+          )}
         </div>
         <ReactPaginate
           breakLabel="..."
