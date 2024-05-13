@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort } from "../redux/slices/filterSlice";
-const list = [
+import { current } from "@reduxjs/toolkit";
+export const sortlist = [
   { name: "популярности по-возрастанию", sortProperty: "raiting" },
   { name: "популярности по-убыванию", sortProperty: "-raiting" },
   { name: "цене по-возрастанию", sortProperty: "price" },
@@ -13,10 +14,22 @@ export default function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
   const [sortO, setSortO] = useState(false);
+  const sortRef = useRef();
 
   const sortName = sort.name;
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setSortO(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -36,7 +49,7 @@ export default function Sort() {
       {sortO && (
         <div className="sort__popup">
           <ul>
-            {list.map((lis, i) => (
+            {sortlist.map((lis, i) => (
               <li
                 onClick={() => {
                   dispatch(setSort(lis));

@@ -1,45 +1,53 @@
 import Category from "../components/category";
-import Sort from "../components/sort";
+import Sort, { list, sortlist } from "../components/sort";
+import qs from "qs";
 import PizzaBlock from "../components/pizzaBlock";
 import axios from "axios";
 import Skeletone from "../components/skelletonPizzaBlock";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App";
-import { setCategoryId, setPageCount } from "../redux/slices/filterSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  setCategoryId,
+  setPageCount,
+  setFilters,
+} from "../redux/slices/filterSlice";
 export default function Home() {
   const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortValue = useSelector((state) => state.filter.sort.sortProperty);
+  const sortVal = useSelector((state) => state.filter.sort.sortProperty);
+  const isSearch = useRef(true);
+  const isMounted = useRef(true);
   const pageCount = useSelector((state) => state.filter.pageCount);
   const categoryIndex = categoryId;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { searches } = useContext(AppContext);
   const [piz, setPiz] = useState([]);
   const [image, setImage] = useState(true);
 
-  console.log(categoryIndex, sortValue);
   const onClickedCategory = (id) => {
     dispatch(setCategoryId(id));
   };
-  console.log(categoryId);
   useEffect(() => {
-    const order = sortValue.includes("-") ? "asc" : "desc";
-    const sortBy = sortValue.replace("-", "");
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      console.log(params);
+      const sort = sortlist.find(
+        (obj) => obj.sortProperty === params.sortValue
+      );
+      console.log(sort);
+      dispatch(setFilters({ ...params, sort }));
+    }
+    isSearch.current = true;
+  }, []);
+  const ax = () => {
+    const order = sortVal.includes("-") ? "asc" : "desc";
+    const sortBy = sortVal.replace("-", "");
 
     setImage(true);
-    // fetch(
-    //   `https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes?page=${currentPage}&limit=4&${
-    //     categoryIndex > 0 ? `category=${categoryIndex}` : ``
-    //   }&sortBy=${sortBy}&order=${order}${searches ? `&search=${searches}` : ``}`
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((arr) => {
-    //     setPiz(arr);
-    //     setImage(false);
-    //   });
+
     axios
       .get(
         `https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes?page=${pageCount}&limit=4&${
@@ -52,8 +60,27 @@ export default function Home() {
         setPiz(res.data);
         setImage(false);
       });
-    window.scrollTo(0, 0);
-  }, [categoryIndex, sortValue, searches, pageCount]);
+  };
+  useEffect(() => {
+    if (isSearch.current) {
+      ax();
+      window.scrollTo(0, 0);
+    }
+    isSearch.current = true;
+  }, [categoryIndex, sortVal, searches, pageCount]);
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      const queryString = qs.stringify({
+        sortValue: sortVal,
+        categoryId,
+        pageCount,
+      });
+      navigate(`?${queryString}`);
+      console.log(queryString);
+    }
+    isMounted.current = false;
+  }, [categoryId, sortVal, searches, pageCount]);
   return (
     <>
       <div className="container">
@@ -80,6 +107,7 @@ export default function Home() {
                 .map((pizza) => (
                   <PizzaBlock
                     key={pizza.id}
+                    id={pizza.id}
                     title={pizza.title}
                     price={pizza.price}
                     image={pizza.imageUrl}
