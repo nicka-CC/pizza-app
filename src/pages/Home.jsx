@@ -7,7 +7,7 @@ import ReactPaginate from "react-paginate";
 import {useDispatch, useSelector} from "react-redux";
 import {useContext, useEffect, useRef, useState} from "react";
 import {AppContext} from "../App";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice";
 import {fetchPizzas} from "../redux/slices/pizzaSlice";
 
@@ -113,6 +113,7 @@ export default function Home() {
                     <Skeletone key={index} />
                   ))
                 : items.map((pizza) => (
+                  <Link to={`/pizza/${pizza.id}`} key={pizza.id}>
                     <PizzaBlock
                       key={pizza.id}
                       id={pizza.id}
@@ -123,6 +124,7 @@ export default function Home() {
                       types={pizza.types}
                     >
                     </PizzaBlock>
+                  </Link>
                   ))}
 
             </>

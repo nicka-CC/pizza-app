@@ -1,12 +1,12 @@
-import React, { createContext, useState } from "react";
+import React, {createContext, useState} from "react";
 import "./App.css";
 import "./scss/app.scss";
 import Header from "./components/header";
 import Home from "./pages/Home";
-import { Route, Routes } from "react-router-dom";
-
+import {Route, Routes} from "react-router-dom";
 import Cart from "./pages/cart";
 import NotFound from "./pages/n404";
+import PizzaItem from "./components/pizzaItem";
 
 export const AppContext = createContext();
 function App() {
@@ -21,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/pizza/:id" element={<PizzaItem />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
