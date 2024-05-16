@@ -1,20 +1,16 @@
 import Category from "../components/category";
-import Sort, { list, sortlist } from "../components/sort";
+import Sort, {sortlist} from "../components/sort";
 import qs from "qs";
 import PizzaBlock from "../components/pizzaBlock";
-import axios from "axios";
 import Skeletone from "../components/skelletonPizzaBlock";
 import ReactPaginate from "react-paginate";
-import { useDispatch, useSelector } from "react-redux";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { AppContext } from "../App";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  setCategoryId,
-  setPageCount,
-  setFilters,
-} from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {useContext, useEffect, useRef, useState} from "react";
+import {AppContext} from "../App";
+import {useNavigate} from "react-router-dom";
+import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice";
+import {fetchPizzas} from "../redux/slices/pizzaSlice";
+
 export default function Home() {
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortVal = useSelector((state) => state.filter.sort.sortProperty);
@@ -126,10 +122,9 @@ export default function Home() {
                       sizes={pizza.sizes}
                       types={pizza.types}
                     >
-                      {console.log(pizza.imageUrl)}
                     </PizzaBlock>
                   ))}
-              )
+
             </>
           )}
         </div>

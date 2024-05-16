@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setSort } from "../redux/slices/filterSlice";
-import { current } from "@reduxjs/toolkit";
+import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectorSort, setSort} from "../redux/slices/filterSlice";
+
 export const sortlist = [
   { name: "популярности по-возрастанию", sortProperty: "raiting" },
   { name: "популярности по-убыванию", sortProperty: "-raiting" },
@@ -12,7 +12,7 @@ export const sortlist = [
 ];
 export default function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector(selectorSort);
   const [sortO, setSortO] = useState(false);
   const sortRef = useRef();
 

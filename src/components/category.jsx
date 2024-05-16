@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function Category({ value, onClickOnCategory }) {
   // console.log(value);
 
@@ -9,7 +7,7 @@ export default function Category({ value, onClickOnCategory }) {
     "Итальянские",
     "Американские",
     "Жирные",
-    "Бичевские",
+    "Дешёвые",
     "Диетические",
   ];
   return (

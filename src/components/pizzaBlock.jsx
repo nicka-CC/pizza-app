@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../redux/slices/cartSlice";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addItem} from "../redux/slices/cartSlice";
+import {selectorCartById} from "../redux/slices/pizzaSlice";
+
 export default function PizzaBlock({ id, title, price, image, sizes, types }) {
   const dispatch = useDispatch();
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
-  const cartItem = useSelector((state) =>
-    state.cart.items.find((obj) => obj.id === id)
-  );
+  const cartItem = useSelector(selectorCartById(id));
   const [cout, setCout] = useState(0);
   const typenames = ["нормальная", "made in italy"];
   const addedCount = cartItem ? cartItem.count : 0;
@@ -22,6 +22,8 @@ export default function PizzaBlock({ id, title, price, image, sizes, types }) {
     };
     dispatch(addItem(item));
   };
+  useEffect(() => {console.log(cartItem)},[addedCount])
+
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
