@@ -6,9 +6,16 @@ import Home from "./pages/Home";
 import {Route, Routes} from "react-router-dom";
 import Cart from "./pages/cart";
 import NotFound from "./pages/n404";
-import PizzaItem from "./components/pizzaItem";
+import PizzaItem from "./components/pizzaItem.tsx";
 
-export const AppContext = createContext();
+interface AppContextType {
+  searches: string;
+  setSearches: React.Dispatch<React.SetStateAction<string>>;
+}
+export const AppContext = createContext<AppContextType>({
+  searches: '',
+  setSearches: () => {}
+});
 function App() {
   const [searches, setSearches] = useState("");
 

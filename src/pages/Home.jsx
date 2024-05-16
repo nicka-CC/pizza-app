@@ -6,7 +6,7 @@ import Skeletone from "../components/skelletonPizzaBlock";
 import ReactPaginate from "react-paginate";
 import {useDispatch, useSelector} from "react-redux";
 import {useContext, useEffect, useRef, useState} from "react";
-import {AppContext} from "../App";
+import {AppContext} from "../App.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice";
 import {fetchPizzas} from "../redux/slices/pizzaSlice";

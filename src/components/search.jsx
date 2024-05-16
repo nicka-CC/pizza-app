@@ -1,6 +1,6 @@
-import { useCallback, useContext, useRef, useState } from "react";
+import {useCallback, useContext, useRef, useState} from "react";
 import style from "./Search.module.scss";
-import { AppContext } from "../App";
+import {AppContext} from "../App.tsx";
 import debounce from "lodash.debounce";
 
 export default function Search() {

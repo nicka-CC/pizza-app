@@ -2,28 +2,35 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function PizzaItem(props) {
+type propsData = {
+  imageUrl: string;
+  title: string;
+  price: number;
+}
+
+export default function PizzaItem() {
   const {id} = useParams()
-  const [pizzaData,setPizzaData] = useState();
+  const [pizzaData, setPizzaData] = useState<propsData>();
   useEffect(() => {
-    async function getPizzs(){
+    async function getPizzs() {
       try {
-        const {data} = await axios.get(`https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes/`+id)
+        const {data} = await axios.get(`https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes/` + id)
         setPizzaData(data)
         console.log(data)
 
-      }catch(error){
+      } catch (error) {
         alert('some error')
       }
-      }
+    }
+
     getPizzs();
-    },[])
+  }, [])
   if (!pizzaData) {
     return <h1>Загрузка...</h1>
   }
-  return(
+  return (
     <div className="container">
-      <img src={pizzaData.imageUrl} alt="Pizza logo" />
+      <img src={pizzaData.imageUrl} alt="Pizza logo"/>
       <h2>{pizzaData.title}</h2>
       <h2>{pizzaData.price} Р</h2>
     </div>
