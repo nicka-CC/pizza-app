@@ -1,8 +1,8 @@
-import Category from "../components/category";
-import Sort, {sortlist} from "../components/sort";
+import Category from "../components/category.tsx";
+import Sort, {sortlist} from "../components/sort.tsx";
 import qs from "qs";
-import PizzaBlock from "../components/pizzaBlock";
-import Skeletone from "../components/skelletonPizzaBlock";
+import PizzaBlock from "../components/pizzaBlock.tsx";
+import Skeletone from "../components/skelletonPizzaBlock.tsx";
 import ReactPaginate from "react-paginate";
 import {useDispatch, useSelector} from "react-redux";
 import {useContext, useEffect, useRef, useState} from "react";
@@ -12,12 +12,12 @@ import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSl
 import {fetchPizzas} from "../redux/slices/pizzaSlice";
 
 export default function Home() {
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortVal = useSelector((state) => state.filter.sort.sortProperty);
+  const categoryId = useSelector((state:any) => state.filter.categoryId);
+  const sortVal = useSelector((state:any) => state.filter.sort.sortProperty);
   const isSearch = useRef(true);
   const isMounted = useRef(true);
-  const pageCount = useSelector((state) => state.filter.pageCount);
-  const { items, status } = useSelector((state) => state.pizza);
+  const pageCount = useSelector((state:any) => state.filter.pageCount);
+  const { items, status } = useSelector((state:any) => state.pizza);
   const categoryIndex = categoryId;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export default function Home() {
 
   const [image, setImage] = useState(true);
 
-  const onClickedCategory = (id) => {
+  const onClickedCategory = (id:any) => {
     dispatch(setCategoryId(id));
   };
   useEffect(() => {
@@ -47,7 +47,9 @@ export default function Home() {
     setImage(true);
 
     try {
+
       dispatch(
+        // @ts-ignore
         fetchPizzas({ sortBy, order, searches, categoryIndex, pageCount })
       );
       // setPiz(res.data);
@@ -112,10 +114,10 @@ export default function Home() {
                 ? [...new Array(13)].map((_, index) => (
                     <Skeletone key={index} />
                   ))
-                : items.map((pizza) => (
+                : items.map((pizza:any) => (
                   <Link to={`/pizza/${pizza.id}`} key={pizza.id}>
                     <PizzaBlock
-                      key={pizza.id}
+
                       id={pizza.id}
                       title={pizza.title}
                       price={pizza.price}

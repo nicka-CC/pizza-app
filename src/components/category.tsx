@@ -1,4 +1,4 @@
-export default function Category({ value, onClickOnCategory }) {
+export default function Category(value: any, onClickOnCategory: any) {
   // console.log(value);
 
   const catigories = [

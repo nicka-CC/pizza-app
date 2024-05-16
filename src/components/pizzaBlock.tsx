@@ -3,7 +3,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {addItem} from "../redux/slices/cartSlice";
 import {selectorCartById} from "../redux/slices/pizzaSlice";
 
-export default function PizzaBlock({ id, title, price, image, sizes, types }) {
+type cartItemType = {
+  id: number;
+  title: string;
+  type: string;
+  price: number;
+  count: number;
+  image: string;
+  sizes: number[];
+  types: number[];
+}
+export default function PizzaBlock({id, title, price, image, sizes, types}: cartItemType) {
   const dispatch = useDispatch();
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
@@ -22,12 +32,14 @@ export default function PizzaBlock({ id, title, price, image, sizes, types }) {
     };
     dispatch(addItem(item));
   };
-  useEffect(() => {console.log(cartItem)},[addedCount])
+  useEffect(() => {
+    console.log(cartItem)
+  }, [addedCount])
 
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={image} alt="Pizza" />
+        <img className="pizza-block__image" src={image} alt="Pizza"/>
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>

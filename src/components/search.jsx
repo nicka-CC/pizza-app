@@ -5,7 +5,7 @@ import debounce from "lodash.debounce";
 
 export default function Search() {
   const [vInput, setVInput] = useState("");
-  const { searches, setSearches } = useContext(AppContext);
+  const {searches, setSearches} = useContext(AppContext);
   const inputRef = useRef();
   const onClickClear = () => {
     setSearches("");

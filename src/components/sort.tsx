@@ -2,23 +2,27 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectorSort, setSort} from "../redux/slices/filterSlice";
 
-export const sortlist = [
-  { name: "популярности по-возрастанию", sortProperty: "raiting" },
-  { name: "популярности по-убыванию", sortProperty: "-raiting" },
-  { name: "цене по-возрастанию", sortProperty: "price" },
-  { name: "цене по-убыванию", sortProperty: "-price" },
-  { name: "алфавиту по-возрастанию", sortProperty: "title" },
-  { name: "алфавиту по-убыванию", sortProperty: "-title" },
+type SortType = {
+  name: string;
+  sortProperty: string
+}
+export const sortlist: SortType[] = [
+  {name: "популярности по-возрастанию", sortProperty: "raiting"},
+  {name: "популярности по-убыванию", sortProperty: "-raiting"},
+  {name: "цене по-возрастанию", sortProperty: "price"},
+  {name: "цене по-убыванию", sortProperty: "-price"},
+  {name: "алфавиту по-возрастанию", sortProperty: "title"},
+  {name: "алфавиту по-убыванию", sortProperty: "-title"},
 ];
 export default function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(selectorSort);
   const [sortO, setSortO] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef(null);
 
   const sortName = sort.name;
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setSortO(false);
       }
@@ -49,15 +53,15 @@ export default function Sort() {
       {sortO && (
         <div className="sort__popup">
           <ul>
-            {sortlist.map((lis, i) => (
-              <li
-                onClick={() => {
-                  dispatch(setSort(lis));
-                  setSortO(false);
-                }}
-                className={
-                  sort.sortProperty === lis.sortProperty ? "active" : ""
-                }
+            {sortlist.map((lis: SortType) => (
+              <li key={lis.name}
+                  onClick={() => {
+                    dispatch(setSort(lis));
+                    setSortO(false);
+                  }}
+                  className={
+                    sort.sortProperty === lis.sortProperty ? "active" : ""
+                  }
               >
                 {lis.name}
               </li>

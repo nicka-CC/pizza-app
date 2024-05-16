@@ -1,11 +1,11 @@
 import React, {createContext, useState} from "react";
 import "./App.css";
 import "./scss/app.scss";
-import Header from "./components/header";
-import Home from "./pages/Home";
+import Header from "./components/header.tsx";
+import Home from "./pages/Home.tsx";
 import {Route, Routes} from "react-router-dom";
-import Cart from "./pages/cart";
-import NotFound from "./pages/n404";
+import Cart from "./pages/cart.tsx";
+import NotFound from "./pages/n404.tsx";
 import PizzaItem from "./components/pizzaItem.tsx";
 
 interface AppContextType {
