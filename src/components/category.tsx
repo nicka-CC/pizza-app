@@ -1,4 +1,8 @@
-export default function Category(value: any, onClickOnCategory: any) {
+type Category = {
+  value:number;
+  onClickOnCategory:(i:number)=> (void)
+}
+export default function Category({value, onClickOnCategory}:Category){
   // console.log(value);
 
   const catigories = [

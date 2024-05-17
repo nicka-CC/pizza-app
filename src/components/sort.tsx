@@ -6,6 +6,7 @@ type SortType = {
   name: string;
   sortProperty: string
 }
+
 export const sortlist: SortType[] = [
   {name: "популярности по-возрастанию", sortProperty: "raiting"},
   {name: "популярности по-убыванию", sortProperty: "-raiting"},
@@ -22,13 +23,16 @@ export default function Sort() {
 
   const sortName = sort.name;
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: React.MouseEvent<HTMLBodyElement>) => {
+      //@ts-ignore
       if (!event.composedPath().includes(sortRef.current)) {
         setSortO(false);
       }
     };
+    //@ts-ignore
     document.body.addEventListener("click", handleClickOutside);
     return () => {
+      //@ts-ignore
       document.body.removeEventListener("click", handleClickOutside);
     };
   }, []);

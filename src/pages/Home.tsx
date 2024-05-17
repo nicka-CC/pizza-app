@@ -12,20 +12,20 @@ import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSl
 import {fetchPizzas} from "../redux/slices/pizzaSlice";
 
 export default function Home() {
-  const categoryId = useSelector((state:any) => state.filter.categoryId);
-  const sortVal = useSelector((state:any) => state.filter.sort.sortProperty);
+  const categoryId = useSelector((state: any) => state.filter.categoryId);
+  const sortVal = useSelector((state: any) => state.filter.sort.sortProperty);
   const isSearch = useRef(true);
   const isMounted = useRef(true);
-  const pageCount = useSelector((state:any) => state.filter.pageCount);
-  const { items, status } = useSelector((state:any) => state.pizza);
+  const pageCount = useSelector((state: any) => state.filter.pageCount);
+  const {items, status} = useSelector((state: any) => state.pizza);
   const categoryIndex = categoryId;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { searches } = useContext(AppContext);
+  const {searches} = useContext(AppContext);
 
   const [image, setImage] = useState(true);
 
-  const onClickedCategory = (id:any) => {
+  const onClickedCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Home() {
         (obj) => obj.sortProperty === params.sortValue
       );
       console.log(sort);
-      dispatch(setFilters({ ...params, sort }));
+      dispatch(setFilters({...params, sort}));
     }
     isSearch.current = true;
   }, []);
@@ -50,7 +50,7 @@ export default function Home() {
 
       dispatch(
         // @ts-ignore
-        fetchPizzas({ sortBy, order, searches, categoryIndex, pageCount })
+        fetchPizzas({sortBy, order, searches, categoryIndex, pageCount})
       );
       // setPiz(res.data);
     } catch (error) {
@@ -99,7 +99,7 @@ export default function Home() {
             value={categoryIndex}
             onClickOnCategory={onClickedCategory}
           />
-          <Sort />
+          <Sort/>
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
@@ -112,12 +112,13 @@ export default function Home() {
             <>
               {status === "loading"
                 ? [...new Array(13)].map((_, index) => (
-                    <Skeletone key={index} />
-                  ))
-                : items.map((pizza:any) => (
+                  <Skeletone key={index}/>
+                ))
+                : items.map((pizza: any) => (
                   <Link to={`/pizza/${pizza.id}`} key={pizza.id}>
-                    <PizzaBlock
 
+                    <PizzaBlock
+                      
                       id={pizza.id}
                       title={pizza.title}
                       price={pizza.price}
@@ -127,7 +128,7 @@ export default function Home() {
                     >
                     </PizzaBlock>
                   </Link>
-                  ))}
+                ))}
 
             </>
           )}
