@@ -7,7 +7,7 @@ import PizzaBlock from "../components/pizzaBlock.tsx";
 import Skeletone from "../components/skelletonPizzaBlock.tsx";
 import ReactPaginate from "react-paginate";
 import {useDispatch, useSelector} from "react-redux";
-import {useContext, useEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {AppContext} from "../App.tsx";
 import {useNavigate} from "react-router-dom";
 import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice.ts";
@@ -26,10 +26,10 @@ export default function Home() {
   const {searches} = useContext(AppContext);
 
   const [image, setImage] = useState(true);
-
-  const onClickedCategory = (id: number) => {
+//callback убирает лишние перерисовки
+  const onClickedCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  };
+  },[]);
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
