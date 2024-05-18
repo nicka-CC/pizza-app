@@ -1,15 +1,17 @@
 import Category from "../components/category.tsx";
 import Sort, {sortlist} from "../components/sort.tsx";
 import qs from "qs";
+//@ts-ignore
+import styles from "./Pagination.module.scss";
 import PizzaBlock from "../components/pizzaBlock.tsx";
 import Skeletone from "../components/skelletonPizzaBlock.tsx";
 import ReactPaginate from "react-paginate";
 import {useDispatch, useSelector} from "react-redux";
 import {useContext, useEffect, useRef, useState} from "react";
 import {AppContext} from "../App.tsx";
-import {Link, useNavigate} from "react-router-dom";
-import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice";
-import {fetchPizzas} from "../redux/slices/pizzaSlice";
+import {useNavigate} from "react-router-dom";
+import {setCategoryId, setFilters, setPageCount,} from "../redux/slices/filterSlice.ts";
+import {fetchPizzas} from "../redux/slices/pizzaSlice.ts";
 
 export default function Home() {
   const categoryId = useSelector((state: any) => state.filter.categoryId);
@@ -115,10 +117,10 @@ export default function Home() {
                   <Skeletone key={index}/>
                 ))
                 : items.map((pizza: any) => (
-                  <Link to={`/pizza/${pizza.id}`} key={pizza.id}>
+
 
                     <PizzaBlock
-                      
+                      key={pizza.id}
                       id={pizza.id}
                       title={pizza.title}
                       price={pizza.price}
@@ -127,13 +129,13 @@ export default function Home() {
                       types={pizza.types}
                     >
                     </PizzaBlock>
-                  </Link>
                 ))}
 
             </>
           )}
         </div>
         <ReactPaginate
+          className={styles.root}
           breakLabel="..."
           nextLabel=">"
           previousLabel="<"

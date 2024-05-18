@@ -1,6 +1,21 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {RootState} from "../store.ts"
 
-const initialState = {
+interface  cartSliseState{
+  id:string;
+  title:string;
+  type:string;
+  size:string;
+  price:number;
+  count:number;
+  imageUrl:string;
+}
+interface cartitemState{
+  totalPrice:number;
+  categoryId:number;
+  items: cartSliseState[];
+}
+const initialState:cartitemState = {
   categoryId: 0,
   totalPrice: 0,
   items: [],
@@ -47,6 +62,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const selectorCart = (state) => state.cart;
+export const selectorCart = (state:RootState) => state.cart;
 export const { addItem, removeItem, clearItems, minusItem } = cartSlice.actions;
 export default cartSlice.reducer;

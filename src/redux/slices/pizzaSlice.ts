@@ -1,9 +1,17 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {RootState} from "../store.ts"
 
+type Pizza = {
+  sortBy: string;
+  order: string;
+  searches: string;
+  categoryIndex: number;
+  pageCount: string;
+}
 export const fetchPizzas = createAsyncThunk(
   "pizza/fetchByIdStatus",
-  async (params, thunkAPI) => {
+  async (params: Pizza, thunkAPI) => {
     const {sortBy, order, searches, categoryIndex, pageCount} = params;
     const {data} = await axios.get(
       `https://65d62ccdf6967ba8e3bda424.mockapi.io/pizzes?page=${pageCount}&limit=4&${
@@ -56,5 +64,5 @@ const pizzasSlice = createSlice({
   },
 });
 export const {setItems} = pizzasSlice.actions;
-export const selectorCartById = (id) => (state) => state.cart.items.find((obj) => obj.id === id);
+export const selectorCartById = (id: string) => (state: RootState) => state.cart.items.find((obj) => obj.id === id);
 export default pizzasSlice.reducer;

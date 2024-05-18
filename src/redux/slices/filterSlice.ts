@@ -1,6 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {RootState} from "../store.ts"
 
-const initialState = {
+type Sorts = {
+  name: string,
+  sortProperty: string,
+}
+
+interface fillterSliceInterface {
+  categoryId: number,
+  searchValue: string,
+  pageCount: number,
+  sort: Sorts,
+}
+
+const initialState: fillterSliceInterface = {
   categoryId: 0,
   searchValue: '',
   pageCount: 1,
@@ -33,7 +46,7 @@ const filterSlice = createSlice({
     },
   },
 });
-export const selectorSort = (state)=> state.filter.sort;
-export const { setCategoryId, setSort, setPageCount, setFilters,setSearchValue } =
+export const selectorSort = (state: RootState) => state.filter.sort;
+export const {setCategoryId, setSort, setPageCount, setFilters, setSearchValue} =
   filterSlice.actions;
 export default filterSlice.reducer;

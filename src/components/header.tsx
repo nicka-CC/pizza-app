@@ -1,7 +1,7 @@
 import {Link, useLocation} from "react-router-dom";
 import Search from "./search.tsx";
 import {useSelector} from "react-redux";
-import {selectorCart} from "../redux/slices/cartSlice";
+import {selectorCart} from "../redux/slices/cartSlice.ts";
 
 export default function Header() {
   const {items, totalPrice} = useSelector(selectorCart);

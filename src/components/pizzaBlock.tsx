@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addItem} from "../redux/slices/cartSlice";
-import {selectorCartById} from "../redux/slices/pizzaSlice";
+import {addItem} from "../redux/slices/cartSlice.ts";
+import {selectorCartById} from "../redux/slices/pizzaSlice.ts";
+import {Link} from "react-router-dom";
 
 type cartItemType = {
   id: number;
   title: string;
-  type: string;
   price: number;
-  count: number;
   image: string;
   sizes: number[];
   types: number[];
@@ -17,6 +16,7 @@ export default function PizzaBlock({id, title, price, image, sizes, types}: cart
   const dispatch = useDispatch();
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
+  //@ts-ignore
   const cartItem = useSelector(selectorCartById(id));
   const [cout, setCout] = useState(0);
   const typenames = ["нормальная", "made in italy"];
@@ -39,7 +39,9 @@ export default function PizzaBlock({id, title, price, image, sizes, types}: cart
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
+        <Link to={`/pizza/${id}`} >
         <img className="pizza-block__image" src={image} alt="Pizza"/>
+        </Link>
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
