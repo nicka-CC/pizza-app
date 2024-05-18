@@ -1,7 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../store.ts"
+import {calTotalPrice} from "../../utils/calTotalPrice.ts";
+import {getCartFromLocalStorage} from "../../utils/getCartFromLocalStorage.ts";
 
-interface  cartSliseState{
+export  interface cartSliseState{
   id:string;
   title:string;
   type:string;
@@ -15,10 +17,11 @@ interface cartitemState{
   categoryId:number;
   items: cartSliseState[];
 }
+const DataLS = getCartFromLocalStorage()
 const initialState:cartitemState = {
   categoryId: 0,
-  totalPrice: 0,
-  items: [],
+  totalPrice: DataLS.totalPrice,
+  items: DataLS.items,
 };
 
 const cartSlice = createSlice({
@@ -50,10 +53,7 @@ const cartSlice = createSlice({
     },
     removeItem(state, action) {
       state.items = state.items.filter((obj) => obj.id !== action.payload);
-      state.totalPrice = state.items.reduce(
-        (sum, obj) => obj.price * obj.count - sum,
-        0
-      );
+      state.totalPrice = calTotalPrice(state.items);
     },
     clearItems(state, action) {
       state.items = [];
