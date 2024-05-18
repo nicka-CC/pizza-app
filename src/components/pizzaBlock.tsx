@@ -40,7 +40,7 @@ export default function PizzaBlock({id, title, price, image, sizes, types}: cart
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
         <Link to={`/pizza/${id}`} >
-        <img className="pizza-block__image" src={image} alt="Pizza"/>
+        <img style={{width: "250px",height: "250px"}} className="pizza-block__image" src={image} alt="Pizza"/>
         </Link>
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
