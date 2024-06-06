@@ -38,6 +38,7 @@ const pizzasSlice = createSlice({
   initialState,
   reducers: {
     setItems(state, action) {
+      //@ts-ignore
       state.items = action.payload;
     },
   },
@@ -64,5 +65,5 @@ const pizzasSlice = createSlice({
   },
 });
 export const {setItems} = pizzasSlice.actions;
-export const selectorCartById = (id: string) => (state: RootState) => state.cart.items.find((obj) => obj.id === id);
+export const selectorCartById = (id: string) => (state: RootState) => state.cart.items?.find((obj) => obj.id === id);
 export default pizzasSlice.reducer;

@@ -7,7 +7,7 @@ import CartEmpty from "../components/CartEmpty.tsx";
 export default function Cart() {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector(selectorCart);
-  const totalCount = items.reduce((sum:number, item:any) => sum + item.count, 0);
+  const totalCount = items?.reduce((sum:number, item:any) => sum + item.count, 0);
   const onClickClear = () => {
     if (window.confirm("Очистить корзину?")) {
       dispatch(clearItems(''));
