@@ -30,6 +30,7 @@ export default function PizzaBlock({id, title, price, image, sizes, types}: cart
       types: activeType,
       sizes: activeSize,
     };
+    console.log(item)
     dispatch(addItem(item));
   };
   useEffect(() => {

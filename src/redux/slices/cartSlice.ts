@@ -21,7 +21,7 @@ const DataLS = getCartFromLocalStorage()
 const initialState:cartitemState = {
   categoryId: 0,
   totalPrice: DataLS.totalPrice,
-  items: DataLS.items,
+  items: DataLS.items || [],
 };
 
 const cartSlice = createSlice({
@@ -31,7 +31,7 @@ const cartSlice = createSlice({
     addItem(state, action) {
       //   state.items.push(action.payload);
       //   state.totalPrice = state.items.reduce((sum, obj) => obj.price + sum, 0);
-      const findItem = state.items?.find((obj) => obj.id === action.payload.id);
+      const findItem = state?.items?.find((obj) => obj.id === action.payload.id);
       if (findItem) {
         findItem.count++;
       } else {
@@ -40,10 +40,12 @@ const cartSlice = createSlice({
           count: 1,
         });
       }
-      state.totalPrice = state.items.reduce(
+
+      state.totalPrice = state?.items?.reduce(
         (sum, obj) => obj.price * obj.count + sum,
         0
       );
+
     },
     minusItem(state, action) {
       const findItem = state.items.find((obj) => obj.id === action.payload);
@@ -52,7 +54,7 @@ const cartSlice = createSlice({
       }
     },
     removeItem(state, action) {
-      state.items = state.items.filter((obj) => obj.id !== action.payload);
+      state.items = state?.items.filter((obj) => obj.id !== action.payload);
       state.totalPrice = calTotalPrice(state.items);
     },
     clearItems(state, action) {
